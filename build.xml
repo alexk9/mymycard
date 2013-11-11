@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="GoStop Test" default="backup.src">
+  <property name="src.dir" value="src"/>
+  <property name="classes.dir" value="bin"/>
+  <property name="resources.dir" value="resources.src"/>
+  <property name="jar.dir" value="lib"/>
+  <property name="resource.jar" value="gsgostop.rsc.jar"/>
+  <property name="sound.jars"
+            value="jorbis-0.0.17.jar tritonus_jorbis-0.3.6.jar tritonus_share-0.3.6.jar ."/>
+  <property name="build.number.file" value="build.number"/>
+  <property name="major.minor" value="0.7"/>
+
+  <tstamp/>
+
+  <target name="backup.src" depends="build.rsc">
+    <property file="${build.number.file}"/>
+    <property name="version" value="${major.minor}.${build.number}"/>
+
+    <zip destfile="backup/gsgostop-${version}.${DSTAMP}.zip">
+      <fileset dir=".">
+        <include name="src/org/gs/game/gostop/**"/>
+        <include name="gs_gostop_settings.xml"/>
+        <include name="build.xml"/>
+        <include name="build.number"/>
+        <include name="jorbis/build.xml"/>
+      </fileset>
+    </zip>
+
+    <jar destfile="${jar.dir}/${resource.jar}" update="true">
+      <fileset dir="${resources.dir}">
+        <include name="resources/*.properties"/>
+        <include name="resources/src/*.properties"/>
+        <include name="resources/avatar/*.jpg"/>
+        <include name="resources/images/*.jpg"/>
+        <exclude name="resources/images/*.v*.jpg"/>
+      </fileset>
+    </jar>
+  </target>
+
+  <target name="clean">
+    <delete dir="${classes.dir}" quiet="true"/>
+  </target>
+
+  <target name="build.rsc">
+    <native2ascii src="${resources.dir}/resources/src" includes="*.properties"
+                  dest="${resources.dir}/resources"/>
+  </target>
+
+  <target name="compile" depends="build.rsc">
+    <mkdir dir="${classes.dir}"/>
+    <javac destdir="${classes.dir}" debug="on">
+      <src path="${src.dir}"/>
+      <include name="org/gs/game/gostop/**/*.java"/>
+    </javac>
+  </target>
+
+  <target name="build.jar" depends="compile">
+    <buildnumber file="${build.number.file}"/>
+    <property name="version" value="${major.minor}.${build.number}"/>
+
+    <mkdir dir="${jar.dir}"/>
+
+    <jar destfile="${jar.dir}/gsgostop.jar">
+      <fileset dir="${classes.dir}" includes="**/*.class"/>
+      <fileset dir="." includes="gs_gostop_settings.xml"/>
+
+      <manifest>
+        <attribute name="Built-By" value="GS"/>
+        <attribute name="Main-Class" value="org.gs.game.gostop.Main"/>
+        <attribute name="Class-Path" value="${resource.jar} ${sound.jars}"/>
+        <attribute name="Implementation-Title" value="GS GoStop"/>
+        <attribute name="Implementation-Version" value="${version} ${TODAY}"/> 
+        <attribute name="Implementation-Vendor" value="GS.ORG"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="rebuild.jar" depends="backup.src,clean,build.jar"/>
+</project>
