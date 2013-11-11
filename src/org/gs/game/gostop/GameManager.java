@@ -277,15 +277,21 @@ public class GameManager implements ICardDeck
             gamePanel.getActionManager().addItem(sda);
         }
     }
-    
+
+    /**
+     * 스택에 있는 카드까기 종료 후에, 플레이를 시작하자.
+     */
     public void onFlipStackCompleted()
     {
+        //현 플레이어의 index를 받아서, 현재 플래이어의 정보를 가져온다.
         GamePlayer gamePlayer = gamePlayers.get(curPlayer);
-     
+
+        //현재 상태를 플레이중 으로 세팅한다.
         setPlayStep(PlayStep.PLAYING);
         gamePanel.getMissionItem().setMission(GameMission.UnknownMission);
 
         getGameTable().addCurTurn();
+        //플레이 합시다.
         gamePlayer.play();
     }
     

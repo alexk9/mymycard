@@ -208,7 +208,11 @@ public class GamePlayer
     {
         playerStatus.addTakenCard(card, isOpposite());
     }
-    
+
+    /**
+     * 현 플레이어의 상태를 Active하게 바꾸고 타 플레이어의 상태를 최신으로 업데이트 함.
+     * 그리고, 카드 집기를 시작하자.
+     */
     public void play()
     {
         playerPanel.setActive(true);

@@ -37,6 +37,9 @@ public class GameTable
     private HashMap<GameUser,PlayerStatus> playersStatus;
     private ICardDeck cardDeck;
     private int curTurn;
+    /**
+     * ??? goPlayers???
+     */
     private List<GamePlayer> goPlayers;
     
     protected GameTable(ICardDeck cardDeck)
@@ -245,7 +248,14 @@ public class GameTable
     {
         return getTableCardPoint(majorCode, true);
     }
-    
+
+    /**
+     * 족보 카드 코드를 이용하여, 테이블에 존재하는 카드 위치를 얻는다.
+     *
+     * @param majorCode
+     * @param assignEmpty
+     * @return
+     */
     public TableCardPoint getTableCardPoint(int majorCode, boolean assignEmpty)
     {
         TableCardPoint emptyPoint = null;
@@ -253,13 +263,17 @@ public class GameTable
         
         for (int i = 0; i < tableCardPoints.length && tcp == null; i++)
         {
+            //언제 majorCode가 0보다 작아지는지 모르게따....
             if (majorCode < 0 && tableCardPoints[i].isEmpty())
             {
                 tcp = tableCardPoints[i];
                 tcp.setMajorCode(0);
             }
+            //majorCode>0 뭔가 카드 코드가 있음.
+            //현재 포인트의 카드가 바로 그 카드!!!
             else if (majorCode > 0 && tableCardPoints[i].getMajorCode() == majorCode)
                 tcp = tableCardPoints[i];
+            //empty point가 아직 할당 되어 짔찌 않고... 현재의 포인트가 empy이면 할당함...
             else if (emptyPoint == null && tableCardPoints[i].isEmpty())
                 emptyPoint = tableCardPoints[i];
         }

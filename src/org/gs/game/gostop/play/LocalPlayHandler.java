@@ -18,6 +18,9 @@ import org.gs.game.gostop.event.GameEventType;
 import org.gs.game.gostop.item.CardItem;
 import org.gs.game.gostop.item.GameItem;
 
+/**
+ * 사용자 플레이 핸들러
+ */
 public class LocalPlayHandler implements IPlayHandler
 {
     private GamePlayer gamePlayer;

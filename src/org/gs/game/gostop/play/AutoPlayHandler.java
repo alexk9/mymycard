@@ -14,6 +14,9 @@ import org.gs.game.gostop.event.GameEventType;
 import org.gs.game.gostop.item.CardItem;
 import org.gs.game.gostop.play.GameRule.GoStopRule;
 
+/**
+ * PC 플레이 핸들러.
+ */
 public class AutoPlayHandler implements IPlayHandler
 {
     private GamePlayer gamePlayer;
@@ -112,14 +115,19 @@ public class AutoPlayHandler implements IPlayHandler
         CardItem cardItem = null;
         List<CardItem> holdCards = gamePlayer.getHoldCards();
         int topPriority = Integer.MIN_VALUE;
-        
+
+        /*
+        들고 있는 카드가 있을때...
+         */
         if (holdCards.size() > 0)
         {
+            //플레이어의 상태를 보자....
             PlayerStatus playerStatus = gamePlayer.getPlayerStatus();
             CardItem bonusCard = null;
             
             for (CardItem ci: holdCards)
             {
+                //카드가 보너스 카드이냐?
                 if (ci.isBonusCard())
                 {
                     if (bonusCard == null || ci.getCardClass() != CardClass.LEAF)
@@ -127,6 +135,7 @@ public class AutoPlayHandler implements IPlayHandler
                 }
                 else
                 {
+                    //카드의 우선순위를 구하자...
                     int priority = getCardPriority(ci, true);
 
                     if (topPriority < priority)
@@ -155,7 +164,13 @@ public class AutoPlayHandler implements IPlayHandler
         
         return cardItem;
     }
-    
+
+    /**
+     * 카드의 우선순위 값을 구한다.
+     * @param cardItem 카드 아이템 인풋
+     * @param checkTable 테이블에 존재여부를 체크할건지여부
+     * @return
+     */
     private int getCardPriority(CardItem cardItem, boolean checkTable)
     {
         int priority = 0;
@@ -164,11 +179,16 @@ public class AutoPlayHandler implements IPlayHandler
         
         if (checkTable)
             tcp = gameTable.getTableCardPoint(cardItem.getMajorCode(), false);
-        
+
+        //go를 한 플레이어를 구한다???
         List<GamePlayer> goPlayers = gameTable.getGoPlayers();
+        //플레이어가 3이고, goPlayer가 null이 아니고,
+        //go한 플레이어가 1명일때, 그리고 그 플레이어가 현 게임 플레이어가 아닌 경우...
         if (gameTable.getGameType().getPlayers() == 3 && goPlayers != null
-            && goPlayers.size() == 1 && goPlayers.get(0) != gamePlayer)
+            && goPlayers.size() == 1 && goPlayers.get(0) != gamePlayer){
+            //go prioriy???
             goPriority = getPriorityOnOtherGo(cardItem, tcp, checkTable, goPlayers.get(0));
+        }
         
         if (tcp != null
             && (tcp.getCardCount(true) == 3
@@ -279,7 +299,15 @@ public class AutoPlayHandler implements IPlayHandler
 
         return priority;
     }
-    
+
+    /**
+     * 다른 사람이 Go를 한 상황에서 우선순위를 얻는다.
+     * @param cardItem
+     * @param tcp
+     * @param checkTable
+     * @param goPlayer
+     * @return
+     */
     private int getPriorityOnOtherGo(CardItem cardItem, TableCardPoint tcp,
                                      boolean checkTable, GamePlayer goPlayer)
     {
