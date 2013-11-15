@@ -52,7 +52,11 @@ public class PlayerPointItem extends GameItem
             repaint();
         }
     }
-    
+
+    /**
+     * 포인트를 리턴한다.
+     * @return
+     */
     public int getPoints()
     {
         return points;

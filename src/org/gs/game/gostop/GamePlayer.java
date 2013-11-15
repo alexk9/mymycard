@@ -32,6 +32,9 @@ public class GamePlayer
     private IPlayHandler playHandler;
     private boolean keepTurn;
     private boolean keepSwamping;
+    /**
+     * 플레이어가 카드를 바닥에 놓지 않고, 덱에서 카드를 깔 수 있는 개수(폭탄 같은)
+     */
     private int flipCount;  // the number of count which the player can flip the deck cards
                             // without laying down in case of bombing
     
@@ -133,6 +136,11 @@ public class GamePlayer
         arrangeHoldCards();
     }
 
+    /**
+     * 내가 이 카드를 들고 있는지 체크한다.
+     * @param cardCode
+     * @return
+     */
     public boolean isHoldingCard(int cardCode)
     {
         boolean isHolding = false;
@@ -219,7 +227,12 @@ public class GamePlayer
         gameTable.refreshOtherPlayerStatus(this);
         playHandler.pickCard();
     }
-    
+
+    /**
+     * 내가 들고 있는 동일 카드가 몇개인지?
+     * @param majorCode
+     * @return
+     */
     public int getHoldCardCount(int majorCode)
     {
         int count = 0;
@@ -282,7 +295,11 @@ public class GamePlayer
     {
         return keepTurn;
     }
-    
+
+    /**
+     * 폭탄을 내거나 이후에 카드를 집어오기 위해서 카운트를 더하거나 빼서 관리함
+     * @param flipCount
+     */
     public void addFlipCount(int flipCount)
     {
         this.flipCount += flipCount;

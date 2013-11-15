@@ -7,6 +7,11 @@ import org.gs.game.gostop.item.CardItem;
  */
 public interface ICardDeck
 {
+    /**
+     * 카드의 맨 위 카드를 가져온다.
+     * @param remove
+     * @return
+     */
     CardItem getTopDeckCard(boolean remove);
     
     void setCanClickTopCard(boolean canClick);

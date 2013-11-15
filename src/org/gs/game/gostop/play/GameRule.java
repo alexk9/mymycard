@@ -13,7 +13,13 @@ import org.gs.game.gostop.item.CardItem;
  */
 public class GameRule
 {
+    /**
+     * 비광에 대해서 따로 정의함.
+     */
     public static final int RAIN_KING = CardItem.getCardCode(0xc, 'a');
+    /**
+     * 9쌍피,끗에 대해서 따로 정의함
+     */
     public static final int NINE_TEN = CardItem.getCardCode(0x9, 'a');
     
     /**
@@ -36,10 +42,14 @@ public class GameRule
     {
         CardItem.getCardCode(0xd, 'a')
     };
-    
+
+    /**
+     * 각 카드별 상태를 저장해둔다.
+     * 4개의 카드 세트 중에서는 광,끗/쌍피,끗,단,피 의 순서대로 정렬되어 있다.
+     */
     private static final CardClass[] _cardClasses =
     {
-        CardClass.KING, CardClass.FIVE, CardClass.LEAF, CardClass.LEAF,     // 1
+        CardClass.KING, CardClass.FIVE, CardClass.LEAF, CardClass.LEAF,     // 1  0,1,2,3
         CardClass.TEN, CardClass.FIVE, CardClass.LEAF, CardClass.LEAF,      // 2
         CardClass.KING, CardClass.FIVE, CardClass.LEAF, CardClass.LEAF,     // 3
         CardClass.TEN, CardClass.FIVE, CardClass.LEAF, CardClass.LEAF,      // 4
@@ -54,7 +64,10 @@ public class GameRule
         CardClass.LEAF, CardClass.LEAF, CardClass.LEAF, CardClass.LEAF,     // d (bonus)
         CardClass.KING                                                      // e (bonus)
     };
-    
+
+    /**
+     * 광에 대해서 따로 정의함
+     */
     private static final int[] _kingCards =
     {
         CardItem.getCardCode(0x1, 'a'),
@@ -125,7 +138,11 @@ public class GameRule
             return ruleCards;
         }
     }
-    
+
+    /**
+     * 특별이 메이드 되는 카드에 대한 족보를 정의한다.
+     * 고도리, 홍단, 초단, 청단
+     */
     private static final GoStopRule[] _gostopRule =
     {
         new GoStopRule("game.rule.godori", CardClass.TEN, 5, _ruleCards[0]),
@@ -140,6 +157,11 @@ public class GameRule
         return _cardClasses[index];
     }
 
+    /**
+     * 광에 대한 점수를 계산한다.
+     * @param kings
+     * @return
+     */
     public static int getKingPoints(List<CardItem> kings)
     {
         int points = 0;
@@ -165,7 +187,12 @@ public class GameRule
         
         return points;
     }
-    
+
+    /**
+     * 끗에 대한 점수를 계산한다.
+     * @param tens
+     * @return
+     */
     public static int getTenPoints(List<CardItem> tens)
     {
         int points = 0;
@@ -195,6 +222,11 @@ public class GameRule
         return getTenPoints(fives);
     }
 
+    /**
+     * 피에 의한 점수를 계산한다.
+     * @param leaves
+     * @return
+     */
     public static int getLeafCount(List<CardItem> leaves)
     {
         int leafCounts = 0;
@@ -204,7 +236,13 @@ public class GameRule
         
         return leafCounts;
     }
-    
+
+    /**
+     * 현 카드 코드의 피 포인트를 리턴한다.
+     * 쌍피인지 쓰리피인지 체크하는것..
+     * @param cardCode
+     * @return
+     */
     public static int getLeafPoints(int cardCode)
     {
         int points;
@@ -244,7 +282,12 @@ public class GameRule
         
         return rules;
     }
-    
+
+    /**
+     * 카드 코드를 가지고 그에 따른 룰을 리턴한다. 고도리,초단,홍단, 청단 등
+     * @param cardCode
+     * @return
+     */
     public static GoStopRule getGoStopRule(int cardCode)
     {
         GoStopRule rule = null;

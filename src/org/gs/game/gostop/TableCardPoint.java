@@ -136,7 +136,12 @@ public class TableCardPoint
         
         return removed;
     }
-    
+
+    /**
+     * 먹으려면 결정이 필요한가요?
+     * 카드가 두장이고, 두개의 카드 클라스가 다르고 또는 카드클라스는 같으나 피의 점수가 다를 경우 결정해야쥐
+     * @return
+     */
     public boolean needToQueryForTaking()
     {
         return getCardCount(false) == 2
@@ -178,7 +183,11 @@ public class TableCardPoint
         
         return has;
     }
-    
+
+    /**
+     * 바닥에 쌍피 또는 쓰리피가 깔려있는지 여부
+     * @return
+     */
     public boolean hasMultiLeaves()
     {
         boolean has = false;

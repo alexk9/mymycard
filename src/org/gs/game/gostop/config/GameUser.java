@@ -35,6 +35,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * 사용자 정보를 저장하는 클래스
+ */
 public class GameUser
 {
     private static final String USER_CONFIG_DIR = "../config";

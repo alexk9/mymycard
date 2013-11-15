@@ -94,7 +94,12 @@ public class PlayerStatus
     {
         return playerSide;
     }
-    
+
+    /**
+     * 주어진 카드 클래스에 해당하는 카드를 리턴한다.
+     * @param cardClass
+     * @return
+     */
     public List<CardItem> getTakenCards(CardClass cardClass)
     {
         List<CardItem> cardItems;
@@ -160,7 +165,11 @@ public class PlayerStatus
         
         return newPoints;
     }
-    
+
+    /**
+     * 플레이어의 포인트를 얻어보자.
+     * @return
+     */
     public int getPlayerPoints()
     {
         return playerPoint.getPoints();
@@ -227,7 +236,14 @@ public class PlayerStatus
     {
         playerBonus.addTripleCount();
     }
-    
+
+    /**
+     * 카드가 이미 먹혔는지 체크한다.
+     * 이미 먹힌, 광,끗,띠,피 중에 있는지 확인하여 리턴한다.
+     * @param cardCode
+     * @param majorCode
+     * @return
+     */
     public boolean isCardTaken(int cardCode, boolean majorCode)
     {
         return isCardTaken(takenLeaves, cardCode, majorCode)
@@ -272,14 +288,21 @@ public class PlayerStatus
         
         return needToDecide;
     }
-    
+
+    /**
+     * 9짜가 결정이 되었는지를 체크한다.
+     * @return
+     */
     public boolean isTakenNineUndecided()
     {
+        //9결정 여부
         boolean undecided = nineDecided == NINE_STATUS.NOT_DECIDED;
-        
+
+        //결정이 안되었다면...
         if (undecided)
         {
             undecided = false;
+            //피의 라인에 가서 이놈이 있으면 결정된걸로 하자.
             for (int i = 0; i < takenTens.size() && undecided == false; i++)
                 undecided = takenTens.get(i).getCardClass() == CardClass.TEN_LEAF;
         }
@@ -313,7 +336,15 @@ public class PlayerStatus
     {
         playerPenalty.setPenalty(gamePanalty, penalty);
     }
-    
+
+    /**
+     * 이미 데이큰 된 카드들을 돌면서 먹었는지 체크함.
+     * 테이큰된 카드는 내부 관리하는 변수들임.
+     * @param takenCards
+     * @param cardCode
+     * @param majorCode major코드로만 비교 할건지 여부.
+     * @return
+     */
     private boolean isCardTaken(List<CardItem> takenCards, int cardCode, boolean majorCode)
     {
         boolean taken = false;

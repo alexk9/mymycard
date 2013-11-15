@@ -387,7 +387,12 @@ public class GameManager implements ICardDeck
             gamePanel.getActionManager().addItem(sda);
         }
     }
-    
+
+    /**
+     * 카드의 맨 윗 카드를 깐다.
+     * @param remove 삭제 여부에 따라서 카드를 리턴하고, 덱에서 제거할지 말지를 결정함
+     * @return
+     */
     public CardItem getTopDeckCard(boolean remove)
     {
         int index = -1;

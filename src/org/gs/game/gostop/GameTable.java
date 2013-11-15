@@ -89,7 +89,13 @@ public class GameTable
     {
         return missionItem.isMissionCard(cardCode);
     }
-    
+
+    /**
+     * 해당 룰에 따른 족보가 살아있는지를 체크한다.
+     * 두사람이 족보를 찢어가졌으면 false
+     * @param rule 족보
+     * @return
+     */
     public boolean isRuleAvailable(GoStopRule rule)
     {
         boolean available = true;
@@ -103,6 +109,7 @@ public class GameTable
                 {
                     if (available && ps.isCardTaken(cardCode, false))
                     {
+                        //두번 나왔는데, 플레이어가 바꼈으면 실패한것임
                         if (taken == null)
                             taken = ps;
                         else if (taken != ps)
@@ -114,7 +121,12 @@ public class GameTable
         
         return available;
     }
-    
+
+    /**
+     * 주어진 majorCode에 대한 king카드가 살아있는지를 체크한다.
+     * @param majorCode 1-12의 구분 코드
+     * @return
+     */
     public boolean isKingAvailable(int majorCode)
     {
         int kingCode = CardItem.getCardCode(majorCode, 'a');
@@ -143,14 +155,21 @@ public class GameTable
         
         return available;
     }
-    
+
+    /**
+     * 카드코드를 주고 언테이큰 되었는지 찾아보자!
+     * @param cardCode
+     * @return
+     */
     public int[] getUntakenCardCodes(int cardCode)
     {
         ArrayList<Integer> untaken = new ArrayList<Integer>();
-        
+
+        //카드 코드에 대한 메이저 코드를 얻어보자!
         int majorCode = CardItem.getMajorCode(cardCode);
         for (int i = 'a'; i <= 'd'; i++)
         {
+            //major+minor로 카드 코드를 조합해낸뒤...
             int cc = CardItem.getCardCode(majorCode, i);
             
             if (cc == cardCode)
@@ -251,7 +270,8 @@ public class GameTable
 
     /**
      * 족보 카드 코드를 이용하여, 테이블에 존재하는 카드 위치를 얻는다.
-     *
+     * assignEmpty가 true이면, 카드를 찾지 못한경우, 빈칸의 위치를 리턴한다.
+     * 아무래도 맨 마지막 칸을 리턴하겠죠?
      * @param majorCode
      * @param assignEmpty
      * @return
@@ -301,12 +321,21 @@ public class GameTable
     {
         cardDeck.setCanClickTopCard(canClick);
     }
-    
+
+    /**
+     * 카드가 나에게 또는 다른 사람에거 이미 테이큰 되었는지 체크한다.
+     * @param cardCode
+     * @param majorCode
+     * @return
+     */
     public boolean isCardTaken(int cardCode, boolean majorCode)
     {
         boolean taken = false;
+        //플레이어가 먹은 모드 카드를 나열한다.
         Iterator<PlayerStatus> itPS = playersStatus.values().iterator();
-        
+
+
+        //모든 카드를 돌면서.... 카드를 먹었는지 체크한다.
         while (taken == false && itPS.hasNext())
             taken = itPS.next().isCardTaken(cardCode, majorCode);
         
@@ -419,11 +448,17 @@ public class GameTable
         
         return empty;
     }
-    
+
+    /**
+     * 테이블 상의 싼 카드를 추출한다. 모두~
+     * @return 싼 카드의 majorCode를 저장한 배열
+     */
     public Integer[] getSwampedCardsOnTable()
     {
+        //싼카드를 찾아보자!
         ArrayList<Integer> swampedCards = new ArrayList<Integer>(2);
-        
+
+        //테이블의 카드 포인트 중 3장짜리가 있다면 넣읍니다.
         for (TableCardPoint tcp: tableCardPoints)
         {
             if (tcp.getCardCount(true) == 3)
@@ -455,7 +490,12 @@ public class GameTable
         
         return pStatus;
     }
-    
+
+    /**
+     * 다른 플레이어의 상태를 가져온다.
+     * @param exceptPlayers 제외할 플레이어
+     * @return
+     */
     public List<PlayerStatus> getOtherPlayerStatus(GamePlayer... exceptPlayers)
     {
         List<PlayerStatus> pStatus = new ArrayList<PlayerStatus>(2);

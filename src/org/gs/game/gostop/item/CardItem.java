@@ -49,7 +49,16 @@ public class CardItem extends GameItem
     {
         return _cardImages.get(cardSize);
     }
-    
+
+    /**
+     * 판위에 있는 카드 아이템을 만든다.
+     * @param parent 부모 UI컴포넌트
+     * @param rect 위치
+     * @param majorCode 메이저코드는 1-12까지의 카드 족보
+     * @param minorCode 마이너 코드는 각 카드 네장의 구분
+     * @param turned 뒤집혔는지 어쩐지...
+     * @param zorder 화면상의 앞/뒤 구분
+     */
     public CardItem(JComponent parent, Rectangle rect, int majorCode, int minorCode,
                     boolean turned, int zorder)
     {
@@ -276,7 +285,14 @@ public class CardItem extends GameItem
     {
         this.mouseOver = mouseOver;
     }
-    
+
+    /**
+     * 48개(+보너스카드)의 배열에서 현 카드가 위치하는 인덱스
+     *
+     * @param majorCode 1~12까지의 메인 인덱스
+     * @param minorCode 4짝의 패 가운데의 순서
+     * @return
+     */
     private static int getCardIndex(int majorCode, int minorCode)
     {
         return (majorCode-1) * 4 + minorCode - 'a';
